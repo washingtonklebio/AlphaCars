@@ -92,6 +92,7 @@ public class TelaLogin extends javax.swing.JFrame {
         jLabel2.setBounds(170, 170, 80, 30);
 
         btnAcessar.setText("Acessar");
+        btnAcessar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAcessar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAcessarActionPerformed(evt);
@@ -108,6 +109,7 @@ public class TelaLogin extends javax.swing.JFrame {
         lblStatus.setBounds(20, 320, 630, 40);
 
         btnLimpar.setText("Limpar");
+        btnLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimparActionPerformed(evt);
@@ -120,6 +122,12 @@ public class TelaLogin extends javax.swing.JFrame {
 
         jCheckBox1.setForeground(new java.awt.Color(255, 0, 0));
         jCheckBox1.setText("salvar dados de usuário");
+        jCheckBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jCheckBox1);
         jCheckBox1.setBounds(260, 260, 200, 23);
 
@@ -140,6 +148,11 @@ public class TelaLogin extends javax.swing.JFrame {
         // CHAMANDO O MÉTODO LOGAR
         logar();
     }//GEN-LAST:event_btnAcessarActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     /**
      * @param args the command line arguments
