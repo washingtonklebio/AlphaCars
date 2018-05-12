@@ -66,11 +66,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/Money-32.png"))); // NOI18N
         jMenuItem6.setText("Locação");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem6);
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/CashBox Register-32.png"))); // NOI18N
         jMenuItem7.setText("Vendas");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem7);
 
         jMenuBar1.add(jMenu1);
@@ -100,6 +110,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/if_car_add_35817.png"))); // NOI18N
         jMenuItem8.setText("Carros");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem8);
 
         jMenuBar1.add(jMenu2);
@@ -162,7 +177,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        // Cadastro de Clientes
+        TelaCadastroClientes clientes = new TelaCadastroClientes();
+        clientes.setVisible(true);
+        clientes.setLocation(desktop.getWidth()/2 - clientes.getWidth() / 2, 
+                    desktop.getHeight()/2 - clientes.getHeight() / 2);
+        desktop.add(clientes);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -190,8 +210,39 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void menuCadastroUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroUserActionPerformed
-
+        TelaUsuarios user = new TelaUsuarios();
+        user.setLocation(desktop.getWidth()/2 - user.getWidth() / 2, 
+                    desktop.getHeight()/2 - user.getHeight() / 2);
+        user.setVisible(true);
+        desktop.add(user);
     }//GEN-LAST:event_menuCadastroUserActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // Cadastro de carros
+        TelaCadastroCarros carros = new TelaCadastroCarros();
+        carros.setVisible(true);
+        carros.setLocation(desktop.getWidth()/2 - carros.getWidth() / 2, 
+                    desktop.getHeight()/2 - carros.getHeight() / 2);
+        desktop.add(carros);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // Locação
+        TelaLocacao locacao = new TelaLocacao();
+        locacao.setVisible(true);
+        locacao.setLocation(desktop.getWidth()/2 - locacao.getWidth() / 2, 
+                    desktop.getHeight()/2 - locacao.getHeight() / 2);
+        desktop.add(locacao);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // Vendas
+        TelaVendas vendas = new TelaVendas();
+        vendas.setVisible(true);
+        vendas.setLocation(desktop.getWidth()/2 - vendas.getWidth() / 2, 
+                    desktop.getHeight()/2 - vendas.getHeight() / 2);
+        desktop.add(vendas);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments

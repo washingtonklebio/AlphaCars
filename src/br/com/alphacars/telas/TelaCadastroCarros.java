@@ -9,12 +9,12 @@ package br.com.alphacars.telas;
  *
  * @author Washington Klébio
  */
-public class TelaUsuarios extends javax.swing.JInternalFrame {
+public class TelaCadastroCarros extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form TelaUsuarios
+     * Creates new form TelaCadastroCarros
      */
-    public TelaUsuarios() {
+    public TelaCadastroCarros() {
         initComponents();
     }
 
@@ -29,17 +29,17 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Cadastro de Usuários");
+        setTitle("Cadastro de Carros");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 650, Short.MAX_VALUE)
+            .addGap(0, 686, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 362, Short.MAX_VALUE)
+            .addGap(0, 360, Short.MAX_VALUE)
         );
 
         pack();
@@ -47,6 +47,5 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
