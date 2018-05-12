@@ -11,23 +11,25 @@ import javax.swing.JOptionPane;
  * @author Washington Klébio
  */
 public class TelaLogin extends javax.swing.JFrame {
+
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
+    
     /**
      * Creates new form TelaLogin
      */
     public TelaLogin() {
         initComponents();
         conexao = ModuloConexao.conector();
-        
-        if(conexao == null){
+
+        if (conexao == null) {
             lblStatus.setVisible(true);
-        }else{
+        } else {
             lblStatus.setVisible(false);
         }
     }
-    
+
     public void logar() {
         String sql = "SELECT * FROM usuarios WHERE login=? AND senha=?";
         try {
@@ -49,8 +51,8 @@ public class TelaLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-    public void limpar(){
+
+    public void limpar() {
         txtUsuario.setText("");
         pwdSenha.setText("");
         txtUsuario.requestFocus();
@@ -72,7 +74,6 @@ public class TelaLogin extends javax.swing.JFrame {
         lblStatus = new javax.swing.JLabel();
         btnLimpar = new javax.swing.JButton();
         pwdSenha = new javax.swing.JPasswordField();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,7 +100,7 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnAcessar);
-        btnAcessar.setBounds(381, 290, 80, 30);
+        btnAcessar.setBounds(380, 270, 80, 30);
 
         lblStatus.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblStatus.setForeground(new java.awt.Color(255, 0, 0));
@@ -116,20 +117,9 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLimpar);
-        btnLimpar.setBounds(260, 290, 80, 30);
+        btnLimpar.setBounds(260, 270, 80, 30);
         getContentPane().add(pwdSenha);
         pwdSenha.setBounds(260, 220, 200, 30);
-
-        jCheckBox1.setForeground(new java.awt.Color(255, 0, 0));
-        jCheckBox1.setText("salvar dados de usuário");
-        jCheckBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jCheckBox1);
-        jCheckBox1.setBounds(260, 260, 200, 23);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/login.jpg"))); // NOI18N
         getContentPane().add(jLabel3);
@@ -148,11 +138,6 @@ public class TelaLogin extends javax.swing.JFrame {
         // CHAMANDO O MÉTODO LOGAR
         logar();
     }//GEN-LAST:event_btnAcessarActionPerformed
-
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,7 +177,6 @@ public class TelaLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAcessar;
     private javax.swing.JButton btnLimpar;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
