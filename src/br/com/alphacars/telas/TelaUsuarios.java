@@ -5,17 +5,51 @@
  */
 package br.com.alphacars.telas;
 
+import br.com.alphacards.net.WebServiceCep;
+import br.com.alphacars.dao.ModuloConexao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Washington Klébio
  */
 public class TelaUsuarios extends javax.swing.JInternalFrame {
 
+    Connection conexao = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
     /**
      * Creates new form TelaUsuarios
      */
     public TelaUsuarios() {
         initComponents();
+        conexao = ModuloConexao.conector();
+    }
+
+    public void buscaCep() {
+        //Faz a busca para o cep 58043-280
+        WebServiceCep webServiceCep = WebServiceCep.searchCep(txtformCep.getText());
+        //A ferramenta de busca ignora qualquer caracter que não seja numero.
+
+        //caso a busca ocorra bem, imprime os resultados.
+        if ((webServiceCep.wasSuccessful())) {
+            //System.out.println(txtformCep.getText().length());
+            txtLogradouro.setText(webServiceCep.getLogradouroFull());
+            txtCidade.setText(webServiceCep.getCidade());
+            txtBairro.setText(webServiceCep.getBairro());
+            txtUf.setText(webServiceCep.getUf());
+
+            //caso haja problemas imprime as exceções.
+        } else if (txtformCep.getText().length() > 9) {
+
+            JOptionPane.showMessageDialog(null, "Erro numero: " + webServiceCep.getResulCode());
+
+            JOptionPane.showMessageDialog(null, "Descrição do erro: " + webServiceCep.getResultText());
+        }
     }
 
     /**
@@ -202,6 +236,11 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
         txtformCep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtformCepActionPerformed(evt);
+            }
+        });
+        txtformCep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtformCepKeyReleased(evt);
             }
         });
 
@@ -416,6 +455,11 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
     private void txtCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCidadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCidadeActionPerformed
+
+    private void txtformCepKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtformCepKeyReleased
+        // Chamando método buscaCep
+        buscaCep();
+    }//GEN-LAST:event_txtformCepKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

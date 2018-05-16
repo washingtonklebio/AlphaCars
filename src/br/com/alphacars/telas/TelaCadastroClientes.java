@@ -1,21 +1,48 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.alphacars.telas;
+
+import br.com.alphacards.net.WebServiceCep;
+import br.com.alphacars.dao.ModuloConexao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Washington Klébio
  */
 public class TelaCadastroClientes extends javax.swing.JInternalFrame {
-
+    Connection conexao = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
     /**
      * Creates new form TelaCadastroClientes
      */
     public TelaCadastroClientes() {
         initComponents();
+        conexao = ModuloConexao.conector();
+    }
+    
+    public void buscaCep() {
+        //Faz a busca para o cep 58043-280
+        WebServiceCep webServiceCep = WebServiceCep.searchCep(txtformCep.getText());
+        //A ferramenta de busca ignora qualquer caracter que não seja numero.
+
+        //caso a busca ocorra bem, imprime os resultados.
+        if ((webServiceCep.wasSuccessful())) {
+            //System.out.println(txtformCep.getText().length());
+            txtEndereco.setText(webServiceCep.getLogradouroFull());
+            txtCidade.setText(webServiceCep.getCidade());
+            txtBairro.setText(webServiceCep.getBairro());
+            txtEstado.setText(webServiceCep.getUf());
+
+            //caso haja problemas imprime as exceções.
+        } else if (txtformCep.getText().length() > 9) {
+
+            JOptionPane.showMessageDialog(null, "Erro numero: " + webServiceCep.getResulCode());
+
+            JOptionPane.showMessageDialog(null, "Descrição do erro: " + webServiceCep.getResultText());
+        }
     }
 
     /**
@@ -48,6 +75,8 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtBairro = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         btnPesquisar = new javax.swing.JButton();
         txtNomeBusca = new javax.swing.JTextField();
@@ -131,6 +160,11 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtformCep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtformCepKeyReleased(evt);
+            }
+        });
 
         jLabel5.setText("Estado:");
 
@@ -145,6 +179,8 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
         jLabel2.setText("Nome:");
 
         jLabel7.setText("Telefone:");
+
+        jLabel9.setText("Bairro:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -164,16 +200,18 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel8)
-                            .addComponent(jLabel2))))
+                            .addComponent(jLabel2)))
+                    .addComponent(jLabel9))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                     .addComponent(txtformCep, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                     .addComponent(txtCidade, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                     .addComponent(txtformTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEmail))
+                    .addComponent(txtEmail)
+                    .addComponent(txtBairro)
+                    .addComponent(txtEstado))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -195,7 +233,11 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
@@ -207,7 +249,7 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtformTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -268,23 +310,20 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel17)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel17)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnModificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnRemover)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAdicionar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnFechar)
-                        .addGap(26, 26, 26))))
+                        .addComponent(btnFechar)))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,21 +332,21 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnModificar)
                         .addComponent(btnAdicionar)
                         .addComponent(btnRemover)
                         .addComponent(btnFechar)))
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
-        setBounds(0, 0, 839, 458);
+        setBounds(0, 0, 839, 486);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCidadeActionPerformed
@@ -326,6 +365,10 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
         // Fechar Janela
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void txtformCepKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtformCepKeyReleased
+        buscaCep();
+    }//GEN-LAST:event_txtformCepKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -347,10 +390,12 @@ public class TelaCadastroClientes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField txtBairro;
     private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
