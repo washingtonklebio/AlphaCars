@@ -18,11 +18,10 @@ import javax.swing.JOptionPane;
  * @author Washington Klébio
  */
 public class TelaCadastroCarros extends javax.swing.JInternalFrame {
+
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-    
-    String situacao;
     /**
      * Creates new form TelaCadastroCarros
      */
@@ -30,7 +29,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
         initComponents();
         conexao = ModuloConexao.conector();
     }
-    
+
     private void adicionar() {
         String sql = "INSERT INTO cad_veiculos(cod,marca,modelo,ano,placa,cor,categoria,situacao,arquivo) VALUES(?,?,?,?,?,?,?,?,?)";
         try {
@@ -42,11 +41,11 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
             pst.setString(5, txtPlaca.getText());
             pst.setString(6, cbCor.getSelectedItem().toString());
             pst.setString(7, cbCategoria.getSelectedItem().toString());
-            pst.setString(8, situacao);
-            pst.setString(9, txtCaminho.getText());           
+            pst.setString(8, cbSituacao.getSelectedItem().toString());
+            pst.setString(9, txtCaminho.getText());
 
             //Validação dos campos obrigatórios
-            if ((txtCod.getText().isEmpty()) || (txtMarca.getText().isEmpty())|| (txtModelo.getText().isEmpty())|| (txtAno.getText().isEmpty())|| (txtPlaca.getText().isEmpty())||(cbCor.getSelectedIndex() == 0)||(cbCategoria.getSelectedIndex() == 0)||(situacao == null) || (txtCaminho.getText().isEmpty())) {
+            if ((txtCod.getText().isEmpty()) || (txtMarca.getText().isEmpty()) || (txtModelo.getText().isEmpty()) || (txtAno.getText().isEmpty()) || (txtPlaca.getText().isEmpty()) || (cbCor.getSelectedIndex() == 0) || (cbCategoria.getSelectedIndex() == 0) || (cbSituacao.getSelectedIndex() == 0) || (txtCaminho.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Peencha todos os campos obrigatórios.");
             } else {
 
@@ -54,7 +53,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                 int adicionado = pst.executeUpdate();
                 // A estrutura abaixo serve para confirmar se os dados foram salvos na tabela ou não.
                 if (adicionado > 0) {
-                    JOptionPane.showMessageDialog(null, "Carro adicionado com Sucesso.");
+                    JOptionPane.showMessageDialog(null, "Veículo adicionado com Sucesso.");
                     txtAno.setText(null);
                     txtCaminho.setText(null);
                     txtCod.setText(null);
@@ -63,12 +62,118 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                     txtPlaca.setText(null);
                     cbCor.setSelectedIndex(0);
                     cbCategoria.setSelectedIndex(0);
+                    cbSituacao.setSelectedIndex(0);
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao adicionar veículo: "+e);
+            JOptionPane.showMessageDialog(null, "Erro ao adicionar veículo: " + e);
         }
     }
+
+    private void remover() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja remover este veículo?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (confirma == JOptionPane.YES_OPTION) {
+            String sql = "DELETE FROM cad_veiculos WHERE cod=?";
+
+            try {
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, txtCod.getText());
+                int apagado = pst.executeUpdate();
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "Veículo removido com sucesso");
+                    txtAno.setText(null);
+                    txtCaminho.setText(null);
+                    txtCod.setText(null);
+                    txtMarca.setText(null);
+                    txtModelo.setText(null);
+                    txtPlaca.setText(null);
+                    cbCor.setSelectedIndex(0);
+                    cbCategoria.setSelectedIndex(0);
+                    cbSituacao.setSelectedIndex(0);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ao remover veículo: " + e);
+            }
+        }
+    }
+
+    private void pesquisar() {
+        String sql = "SELECT * FROM cad_veiculos WHERE cod=?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtCod.getText());
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                txtMarca.setText(rs.getString(2));
+                txtModelo.setText(rs.getString(3));
+                txtAno.setText(rs.getString(4));
+                txtPlaca.setText(rs.getString(5));
+                cbCor.setSelectedItem(rs.getString(6));
+                cbCategoria.setSelectedItem(rs.getString(7));
+                cbSituacao.setSelectedItem(rs.getString(8));
+                txtCaminho.setText(rs.getString(9));
+            } else {
+                JOptionPane.showMessageDialog(null, "Veículo não cadastrado, tente novamente com outro veículo.");
+                // as linhas abaixo "limpa" os campos.
+
+                txtAno.setText(null);
+                txtCaminho.setText(null);
+                txtCod.setText(null);
+                txtMarca.setText(null);
+                txtModelo.setText(null);
+                txtPlaca.setText(null);
+                cbCor.setSelectedIndex(0);
+                cbCategoria.setSelectedIndex(0);
+                cbSituacao.setSelectedIndex(0);
+                
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Erro ao consultar veículo" + e);
+        }
+    }
+    
+    private void alterar(){
+        String sql="UPDATE cad_veiculos SET marca=?,modelo=?,ano=?,placa=?,cor=?, categoria=?,situacao=?,arquivo=? WHERE cod=?";
+        try {
+            pst=conexao.prepareStatement(sql);
+            
+            pst.setString(1, txtMarca.getText());
+            pst.setString(2, txtModelo.getText());
+            pst.setString(3, txtAno.getText());
+            pst.setString(4, txtPlaca.getText());
+            pst.setString(5, cbCor.getSelectedItem().toString());
+            pst.setString(6, cbCategoria.getSelectedItem().toString());
+            pst.setString(7, cbSituacao.getSelectedItem().toString());
+            pst.setString(8, txtCaminho.getText());
+            pst.setString(9, txtCod.getText());
+            
+             //Validação dos campos obrigatórios
+            if ((txtCod.getText().isEmpty()) || (txtMarca.getText().isEmpty()) || (txtModelo.getText().isEmpty()) || (txtAno.getText().isEmpty()) || (txtPlaca.getText().isEmpty()) || (cbCor.getSelectedIndex() == 0) || (cbCategoria.getSelectedIndex() == 0) || (cbSituacao.getSelectedIndex() == 0) || (txtCaminho.getText().isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Peencha todos os campos obrigatórios.");
+            }else {
+
+                // A linha abaixo executa a atualização da tabela com os dados acimas.
+                int adicionado = pst.executeUpdate();
+                // A estrutura abaixo serve para confirmar se os dados foram salvos na tabela ou não.
+                if (adicionado > 0) {
+                    JOptionPane.showMessageDialog(null, "Dados do veículo alterados com Sucesso.");
+                    txtAno.setText(null);
+                    txtCaminho.setText(null);
+                    txtCod.setText(null);
+                    txtMarca.setText(null);
+                    txtModelo.setText(null);
+                    txtPlaca.setText(null);
+                    cbCor.setSelectedIndex(0);
+                    cbCategoria.setSelectedIndex(0);
+                    cbSituacao.setSelectedIndex(0);
+                }
+            }    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Erro ao alterar veículo" + e);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,7 +193,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lblFoto = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -106,8 +211,8 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cbCategoria = new javax.swing.JComboBox<>();
-        rbDisponivel = new javax.swing.JRadioButton();
-        rbIndisponivel = new javax.swing.JRadioButton();
+        btnPesquisar = new javax.swing.JButton();
+        cbSituacao = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
 
@@ -163,16 +268,21 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
             .addComponent(lblFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
         );
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/remover2.png"))); // NOI18N
-        jButton2.setText("Remover");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/remover2.png"))); // NOI18N
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnRemoverActionPerformed(evt);
             }
         });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/modificar.png"))); // NOI18N
         jButton3.setText("Alterar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -201,21 +311,15 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
 
         cbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Novo", "Usado" }));
 
-        buttonGroup1.add(rbDisponivel);
-        rbDisponivel.setText("Disponível");
-        rbDisponivel.addActionListener(new java.awt.event.ActionListener() {
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/Search-32.png"))); // NOI18N
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbDisponivelActionPerformed(evt);
+                btnPesquisarActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(rbIndisponivel);
-        rbIndisponivel.setText("Indisponível");
-        rbIndisponivel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbIndisponivelActionPerformed(evt);
-            }
-        });
+        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Disponível", "Indisponível" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -223,13 +327,6 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rbDisponivel)
-                            .addComponent(rbIndisponivel)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -242,19 +339,29 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                             .addComponent(jLabel10))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtPlaca)
-                                .addComponent(txtAno)
-                                .addComponent(txtModelo)
-                                .addComponent(txtMarca)
-                                .addComponent(cbCor, 0, 140, Short.MAX_VALUE))))
+                            .addComponent(txtPlaca)
+                            .addComponent(txtAno)
+                            .addComponent(cbCor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnPesquisar))
+                            .addComponent(txtMarca)
+                            .addComponent(txtModelo)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel9)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbSituacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(21, 21, 21))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,7 +369,8 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
+                    .addComponent(jLabel10)
+                    .addComponent(btnPesquisar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,11 +397,9 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbDisponivel)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rbIndisponivel)
-                .addContainerGap(14, Short.MAX_VALUE))
+                    .addComponent(jLabel9)
+                    .addComponent(cbSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -309,16 +415,16 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(70, 70, 70)
                         .addComponent(jLabel17))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -338,7 +444,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                                         .addComponent(txtCaminho))))
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(50, 50, 50)))
-                .addGap(76, 76, 76))
+                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,9 +466,9 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
+                            .addComponent(btnRemover)
                             .addComponent(jButton3)
                             .addComponent(btnEnviar)
                             .addComponent(btnFechar))
@@ -376,18 +482,13 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbCorActionPerformed
 
-    private void rbDisponivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDisponivelActionPerformed
-        // Situação disponível
-        situacao = "Disponivel";
-    }//GEN-LAST:event_rbDisponivelActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
             JFileChooser chooser = new JFileChooser();
             chooser.showOpenDialog(null);
             File f = chooser.getSelectedFile();
-            String foto = ""+chooser.getSelectedFile().getName();
+            String foto = "" + chooser.getSelectedFile().getName();
             txtCaminho.setText(foto);
             String filename = f.getAbsolutePath();
             ImageIcon imageIcon = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_DEFAULT));
@@ -406,29 +507,38 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
 
-    private void rbIndisponivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIndisponivelActionPerformed
-        // Situação Indisponivel
-        situacao = "Indisponivel";
-    }//GEN-LAST:event_rbIndisponivelActionPerformed
-
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        // TODO add your handling code here:
+        // Chamando o método adicionar
         adicionar();
     }//GEN-LAST:event_btnEnviarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        // Chamando o método remover
+        remover();
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        // Chamando o método pesquisar
+        pesquisar();
+        
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // Chamando o método alterar
+        alterar();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnRemover;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbCategoria;
     private javax.swing.JComboBox<String> cbCor;
+    private javax.swing.JComboBox<String> cbSituacao;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
@@ -446,8 +556,6 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblFoto;
-    private javax.swing.JRadioButton rbDisponivel;
-    private javax.swing.JRadioButton rbIndisponivel;
     private javax.swing.JTextField txtAno;
     private javax.swing.JTextField txtCaminho;
     private javax.swing.JTextField txtCod;
