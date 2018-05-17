@@ -9,7 +9,7 @@
     </Property>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="AlphaCars - Cadastro de Funcion&#xe1;rios"/>
+    <Property name="title" type="java.lang.String" value="AlphaCars - Cadastro de Usu&#xe1;rios"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>

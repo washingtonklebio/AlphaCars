@@ -105,7 +105,7 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         setClosable(true);
         setIconifiable(true);
-        setTitle("AlphaCars - Cadastro de Funcionários");
+        setTitle("AlphaCars - Cadastro de Usuários");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/imagens/if_Businessman_131483.png"))); // NOI18N
