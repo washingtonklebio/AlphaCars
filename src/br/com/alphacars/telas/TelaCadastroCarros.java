@@ -113,6 +113,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                 cbCategoria.setSelectedItem(rs.getString(7));
                 cbSituacao.setSelectedItem(rs.getString(8));
                 txtCaminho.setText(rs.getString(9));
+               
             } else {
                 JOptionPane.showMessageDialog(null, "Veículo não cadastrado, tente novamente com outro veículo.");
                 // as linhas abaixo "limpa" os campos.
@@ -128,9 +129,12 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                 cbSituacao.setSelectedIndex(0);
                 
             }
+            
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Erro ao consultar veículo" + e);
         }
+        
     }
     
     private void alterar(){
