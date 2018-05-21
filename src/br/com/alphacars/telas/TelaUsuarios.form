@@ -330,10 +330,12 @@
                                   <Component id="txtNome" alignment="0" max="32767" attributes="0"/>
                                   <Component id="txtLogradouro" alignment="0" min="-2" pref="230" max="-2" attributes="0"/>
                                   <Component id="txtNumero" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
-                                  <Component id="txtformTelefone" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
                                   <Component id="txtformCep" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
-                                  <Component id="txtformCpf" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
                                   <Component id="txtBairro" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txtformTelefone" alignment="0" pref="107" max="32767" attributes="0"/>
+                                      <Component id="txtformCpf" alignment="0" pref="107" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="txtCidade" min="-2" pref="120" max="-2" attributes="0"/>
@@ -543,6 +545,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtformTelefoneActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel19">
           <Properties>

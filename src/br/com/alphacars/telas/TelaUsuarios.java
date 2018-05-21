@@ -331,6 +331,11 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         txtformTelefone.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtformTelefone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtformTelefoneActionPerformed(evt);
+            }
+        });
 
         jLabel19.setText("Código:");
 
@@ -360,10 +365,11 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
                                 .addComponent(txtNome, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtLogradouro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtNumero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtformTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtformCep, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtformCpf, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtBairro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtBairro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtformTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                                    .addComponent(txtformCpf, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -525,6 +531,10 @@ public class TelaUsuarios extends javax.swing.JInternalFrame {
         // Chamando o método adicionar
         adicionar();
     }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void txtformTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtformTelefoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtformTelefoneActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
