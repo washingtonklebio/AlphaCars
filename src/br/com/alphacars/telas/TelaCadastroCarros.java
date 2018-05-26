@@ -112,7 +112,8 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                 cbCor.setSelectedItem(rs.getString(6));
                 cbCategoria.setSelectedItem(rs.getString(7));
                 cbSituacao.setSelectedItem(rs.getString(8));
-                txtCaminho.setText(rs.getString(9));
+                txtCaminho.setText(rs.getString(9));               
+                
                
             } else {
                 JOptionPane.showMessageDialog(null, "Veículo não cadastrado, tente novamente com outro veículo.");
@@ -134,7 +135,12 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Erro ao consultar veículo" + e);
         }
-        
+                String carname = txtCaminho.getText();
+                System.out.println (carname);
+                //lblFoto.setIcon(new ImageIcon(getClass().getResource("/br/com/alphacars/veiculos/" + carname)));
+                String filename = "/br/com/alphacars/veiculos/" + carname;
+                lblFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/veiculos/" + carname)));
+                //lblFoto.setSize(310, 176);
     }
     
     private void alterar(){
@@ -265,7 +271,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+            .addComponent(lblFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,7 +476,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnRemover)
                             .addComponent(jButton3)
