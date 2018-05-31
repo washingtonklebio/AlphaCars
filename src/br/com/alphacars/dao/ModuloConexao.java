@@ -10,12 +10,14 @@ import java.sql.DriverManager;
 public class ModuloConexao {
     //Metodo responsavel por estabelecer a conexão com o banco.
     public static Connection conector() {
+        
         java.sql.Connection conexao = null;
         // A linha abaixo chama o drive importado para biblioteca.
         String drive = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/alphacars";
         String user = "root";
         String password = "";
+        
         try {
             Class.forName(drive);
             conexao = DriverManager.getConnection(url, user, password);
