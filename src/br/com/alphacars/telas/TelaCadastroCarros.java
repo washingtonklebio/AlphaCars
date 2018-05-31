@@ -136,7 +136,7 @@ public class TelaCadastroCarros extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null,"Erro ao consultar veículo" + e);
         }
                 String carname = txtCaminho.getText();
-                System.out.println (carname);
+                //System.out.println (carname);
                 //lblFoto.setIcon(new ImageIcon(getClass().getResource("/br/com/alphacars/veiculos/" + carname)));
                 String filename = "/br/com/alphacars/veiculos/" + carname;
                 lblFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/alphacars/veiculos/" + carname)));
