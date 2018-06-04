@@ -15,6 +15,7 @@ public class TelaSobre extends javax.swing.JFrame {
     /** Creates new form TelaSobre */
     public TelaSobre() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
     }
 
     /** This method is called from within the constructor to
